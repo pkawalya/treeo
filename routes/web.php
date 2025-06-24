@@ -2,6 +2,7 @@
 
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoodsReceiptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,10 @@ Livewire::setUpdateRoute(function ($handle) {
 	$path = $url['path'] ?? '';
 
 	return Route::post($path . '/livewire/update', $handle);
+});
+
+// Goods Receipt Routes
+Route::prefix('goods-receipts')->name('goods-receipts.')->group(function () {
+    Route::get('/{goodsReceipt}/print', [GoodsReceiptController::class, 'print'])
+        ->name('print');
 });
