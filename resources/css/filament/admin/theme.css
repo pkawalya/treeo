@@ -1,0 +1,23 @@
+/* Custom Filament Admin Theme Overrides */
+
+/* Reduce sidebar vertical spacing */
+.fi-sidebar-nav {
+    --spacing: 0.5rem !important; /* Reduce the default spacing */
+}
+
+.fi-sidebar-group {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.fi-sidebar-item {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    margin-top: 0.125rem !important;
+    margin-bottom: 0.125rem !important;
+}
+
+.fi-sidebar-group-items {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}

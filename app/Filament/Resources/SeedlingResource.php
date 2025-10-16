@@ -58,7 +58,17 @@ class SeedlingResource extends Resource
                                     ->placeholder('Description of this stage'),
                             ])
                             ->columns(3)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->beforeStateDehydrated(function ($state) {
+                                return is_array($state) ? $state : [];
+                            })
+                            ->afterStateHydrated(function ($component, $state) {
+                                if (is_string($state)) {
+                                    $component->state(json_decode($state, true) ?? []);
+                                } elseif (!is_array($state)) {
+                                    $component->state([]);
+                                }
+                            }),
                     ]),
             ]);
     }

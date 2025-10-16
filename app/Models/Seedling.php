@@ -21,6 +21,21 @@ class Seedling extends Model
     protected $casts = [
         'growth_stages' => 'array',
     ];
+    
+    /**
+     * Get the growth stages attribute with proper array handling
+     *
+     * @param  mixed  $value
+     * @return array
+     */
+    public function getGrowthStagesAttribute($value)
+    {
+        if (is_string($value)) {
+            return json_decode($value, true) ?? [];
+        }
+        
+        return is_array($value) ? $value : [];
+    }
 
     public function inventories()
     {

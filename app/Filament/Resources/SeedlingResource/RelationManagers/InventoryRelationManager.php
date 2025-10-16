@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class InventoryRelationManager extends RelationManager
 {
-    protected static string $relationship = 'inventory';
+    protected static string $relationship = 'inventories';
 
     public function form(Form $form): Form
     {

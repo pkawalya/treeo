@@ -10,7 +10,8 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends BaseDashboard
 {
-    
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static ?int $navigationSort = -2;
 
     public function getTitle(): string|Htmlable
     {
@@ -28,5 +29,11 @@ class Dashboard extends BaseDashboard
             DashboardShortcuts::class,
             FarmerLocationMap::class,
         ];
+    }
+
+    // Prevent duplicate widgets by ensuring they're only registered in header widgets
+    public function getWidgets(): array
+    {
+        return [];
     }
 }

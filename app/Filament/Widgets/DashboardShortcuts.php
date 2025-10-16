@@ -92,6 +92,34 @@ class DashboardShortcuts extends Widget
                 'color' => 'violet',
             ];
         }
+        
+        // User Management
+        if (Route::has('filament.admin.resources.users.index')) {
+            $shortcuts[] = [
+                'label' => 'Users',
+                'icon' => 'heroicon-o-users',
+                'url' => route('filament.admin.resources.users.index'),
+                'color' => 'sky',
+            ];
+        }
+        
+        if (Route::has('filament.admin.resources.roles.index')) {
+            $shortcuts[] = [
+                'label' => 'Roles',
+                'icon' => 'heroicon-o-shield-check',
+                'url' => route('filament.admin.resources.roles.index'),
+                'color' => 'purple',
+            ];
+        }
+        
+        if (Route::has('filament.admin.resources.permissions.index')) {
+            $shortcuts[] = [
+                'label' => 'Permissions',
+                'icon' => 'heroicon-o-key',
+                'url' => route('filament.admin.resources.permissions.index'),
+                'color' => 'rose',
+            ];
+        }
 
         // Vendors
         if (Route::has('filament.admin.resources.vendors.index')) {
