@@ -336,8 +336,7 @@ class VendorResource extends Resource
                         ->icon('heroicon-o-x-circle')
                         ->requiresConfirmation()
                         ->action(fn (Collection $records) => $records->each->update(['is_active' => false])),
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn (Vendor $record): bool => $record->is_active === false),
+                    Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),

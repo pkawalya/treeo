@@ -4,11 +4,51 @@ namespace App\Filament\Resources\PurchaseOrderResource\Pages;
 
 use App\Filament\Resources\PurchaseOrderResource;
 use Filament\Actions;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewPurchaseOrder extends ViewRecord
 {
     protected static string $resource = PurchaseOrderResource::class;
+
+    public function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Purchase Order Details')
+                    ->schema([
+                        TextEntry::make('po_number')
+                            ->icon('heroicon-o-document-text')
+                            ->copyable(),
+                        TextEntry::make('vendor.name')
+                            ->icon('heroicon-o-building-storefront'),
+                        TextEntry::make('order_date')
+                            ->date(),
+                        TextEntry::make('expected_delivery_date')
+                            ->label('Expected Delivery')
+                            ->date(),
+                        TextEntry::make('status')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'draft' => 'gray',
+                                'sent' => 'warning',
+                                'received' => 'success',
+                                'cancelled' => 'danger',
+                            }),
+                        TextEntry::make('total_amount')
+                            ->money('UGX'),
+                        TextEntry::make('payment_terms')
+                            ->default('N/A')
+                            ->columnSpan(2),
+                    ])
+                    ->columns(4)
+                    ->compact()
+                    ->icon('heroicon-o-shopping-cart'),
+            ]);
+    }
 
     protected function getHeaderActions(): array
     {
@@ -34,7 +74,6 @@ class ViewPurchaseOrder extends ViewRecord
                         'approved_by' => auth()->id(),
                         'approved_at' => now(),
                     ]);
-                    $this->refreshFormData(['approved_by', 'approved_at']);
                 })
                 ->requiresConfirmation()
                 ->visible(fn () => $this->record->status === 'sent' && !$this->record->approved_at)
@@ -47,21 +86,5 @@ class ViewPurchaseOrder extends ViewRecord
                 ->visible(fn () => in_array($this->record->status, ['draft', 'sent']))
                 ->color('danger'),
         ];
-    }
-
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        $data['items'] = $this->record->items->map(function ($item) {
-            return [
-                'seedling_id' => $item->seedling_id,
-                'quantity' => $item->quantity,
-                'unit' => $item->unit,
-                'unit_price' => $item->unit_price,
-                'total' => $item->total,
-                'description' => $item->description,
-            ];
-        })->toArray();
-
-        return $data;
     }
 }

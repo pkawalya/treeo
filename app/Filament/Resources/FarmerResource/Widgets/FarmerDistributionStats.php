@@ -15,6 +15,13 @@ class FarmerDistributionStats extends BaseWidget
     protected static ?string $pollingInterval = null;
     protected ?string $heading = 'Distribution Overview';
     protected int|string|array $columnSpan = 'full';
+    
+    protected int | string | array $columns = [
+        'default' => 1,
+        'sm' => 2,
+        'md' => 3,
+        'lg' => 3,
+    ];
 
     public ?Model $record = null;
 
@@ -65,36 +72,23 @@ class FarmerDistributionStats extends BaseWidget
         }
 
         return [
-            Stat::make('Total Distributions', $totalDistributions)
-                ->description('Distribution events')
+            Stat::make('Distributions', $totalDistributions)
+                ->description('Events')
                 ->descriptionIcon('heroicon-o-truck')
-                ->chart([$this->getMonthlyDistributionCounts()])
-                ->color('primary'),
+                ->color('primary')
+                ->extraAttributes(['class' => 'text-sm']),
             
-            Stat::make('Total Seedlings', number_format($totalSeedlings))
-                ->description('Seedlings received')
+            Stat::make('Seedlings', number_format($totalSeedlings))
+                ->description('Received')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('success'),
-            
-            Stat::make('Most Common', $mostCommonSeedling ?? 'None')
-                ->description($mostCommonSeedling ? number_format($mostCommonSeedlingCount) . ' seedlings' : 'No data')
-                ->descriptionIcon('heroicon-o-star')
-                ->color('warning'),
+                ->color('success')
+                ->extraAttributes(['class' => 'text-sm']),
             
             Stat::make('Total Value', 'UGX ' . number_format($totalCost, 0))
-                ->description('Value of distributions')
+                ->description('Distributions')
                 ->descriptionIcon('heroicon-o-currency-dollar')
-                ->color('danger'),
-            
-            Stat::make('Last Distribution', $lastDistribution ? $lastDistribution->distribution_date->format('M d, Y') : 'None')
-                ->description($lastDistribution ? $lastDistribution->seedling->name ?? 'Unknown' : 'No distributions yet')
-                ->descriptionIcon('heroicon-o-calendar')
-                ->color('info'),
-                
-            Stat::make('3-Month Growth', $growthRate > 0 ? '+' . number_format($growthRate, 1) . '%' : number_format($growthRate, 1) . '%')
-                ->description('Compared to previous period')
-                ->descriptionIcon($growthRate >= 0 ? 'heroicon-o-arrow-trending-up' : 'heroicon-o-arrow-trending-down')
-                ->color($growthRate >= 0 ? 'success' : 'danger'),
+                ->color('danger')
+                ->extraAttributes(['class' => 'text-sm']),
         ];
     }
     

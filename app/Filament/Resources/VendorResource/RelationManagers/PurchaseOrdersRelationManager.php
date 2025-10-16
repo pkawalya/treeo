@@ -80,11 +80,15 @@ class PurchaseOrdersRelationManager extends RelationManager
                         '1' => 'Approved',
                         '0' => 'Not Approved',
                     ])
-                    ->query(fn (Builder $query, string $value) => 
-                        $value === '1' 
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (!isset($data['value']) || $data['value'] === null) {
+                            return $query;
+                        }
+                        
+                        return $data['value'] === '1' 
                             ? $query->whereNotNull('approved_at')
-                            : $query->whereNull('approved_at')
-                    ),
+                            : $query->whereNull('approved_at');
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
